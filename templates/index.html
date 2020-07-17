@@ -5,12 +5,28 @@ Spotify helper
 {% endblock %}
 
 {% block content %}
+<div id="wrapper">
 
-<h1>{{song_info.song_name}}</h1>
-<h2>{{song_info.artist}}</h2>
-<p>From the {{song_info.album_type}} <b>{{song_info.album}}</b></p>
-<p>Release date: {{song_info.release_date}} </p>
+  <div id="song_container">
+
+    <div id="cover_container">
+      <img src={{song_info.cover_image}} id="cover_image" alt="">
+    </div>
+    <div id="song_info_container">
 
 
-<img src={{song_info.cover_image}} id ="cover_image" alt="">
+      <h1>{{song_info.song_name}}</h1>
+      <h2>{{song_info.artist}}</h2>
+      <p>From the {{song_info.album_type}} <b>{{song_info.album}}</b></p>
+      <p>Release date: {{song_info.release_date}} </p>
+
+    </div>
+  </div>
+  <div id="lyrics_container">
+    {% for line in song_info.lyrics %}
+      <p>{{line}}</p>
+    {% endfor %}
+  </div>
+</div>
+
 {% endblock %}

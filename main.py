@@ -15,7 +15,9 @@ from flask import Flask, session, request, redirect, render_template
 from flask_session import Session
 import spotipy
 import uuid
+import lyricsgenius
 
+GENIUS_CLIENT_ACCESS = "gwPJBes0Ai9I7S6_3MWXhfV09Bba30t_TpYmGoPi79GlFhHZ_W7HGogczi6WLO0F"
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -42,6 +44,7 @@ def index():
 
     spotify = spotipy.Spotify(auth=token_info['access_token'])
     song_info = get_song_info(spotify)
+    song_info = get_lyrics(song_info)
 
 
 
@@ -69,7 +72,7 @@ def playlists():
 def get_song_info(spotify):
     song_info={}
     result = spotify.current_user_playing_track()
-    print(result)
+    #print(result)
     song_info.update({"song_name": result["item"]["name"] ,
                     "artist": result["item"]["album"]["artists"][0]["name"],
                      "album": result["item"]["album"]["name"],
@@ -78,7 +81,26 @@ def get_song_info(spotify):
                      "release_date": result["item"]["album"]["release_date"]})
 
     #print(result["item"]["name"])
-    print(result)
+    #print(result)
+    return song_info
+
+def get_lyrics(song_info):
+    test=[]
+    genius = lyricsgenius.Genius(GENIUS_CLIENT_ACCESS)
+    try:
+        #artist = genius.search_artist(song_info["artist"])
+        song = genius.search_song(song_info["song_name"], song_info["artist"])
+    #print(song.lyrics)
+        test = song.lyrics
+        test = test.split('\n')
+        print(test)
+    #test = ''.join('<br>' + char if char.isupper() else char.strip() for char in test).strip()
+    except:
+        print("error finding lyrics")
+        test.append("No lyrics found")
+    #artist = genius.search_artist("Bloc Party", max_songs=3, sort="title")
+    #print(artist.songs)
+    song_info.update({"lyrics": test})
     return song_info
 if __name__ == "__main__":
     app.run(debug=True)
