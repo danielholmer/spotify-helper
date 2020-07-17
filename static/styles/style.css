@@ -34,3 +34,6 @@
 #sticky-footer {
   flex-shrink: none;
 }
+#bootstrap-overrides .navbar-brand{
+  color: #1DB954;
+}
