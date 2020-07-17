@@ -1,4 +1,6 @@
 """
+Written by Daniel Holmer
+Based on the app.py example from the Spotipy repo: https://github.com/plamere/spotipy/blob/master/examples/app.py
 Prerequisites
     pip3 install spotipy Flask Flask-Session
     export SPOTIPY_CLIENT_ID=client_id_here
@@ -25,7 +27,7 @@ Session(app)
 @app.route('/')
 def index():
     cache_path = '.cache-'.join(str(uuid.uuid4()))
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=cache_path)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=cache_path, scope='user-read-currently-playing')
     if request.args.get("code"):
         print("request.args.get('code') = True")
         session['token_info'] = auth_manager.get_access_token(request.args["code"], check_cache=False)
@@ -39,14 +41,16 @@ def index():
         return f'<h2><a href="{auth_url}">Sign in</a></h2>'
 
     spotify = spotipy.Spotify(auth=token_info['access_token'])
+    song_info = get_song_info(spotify)
 
 
 
     #print("RESULTS" + results)
-    return f'<h2>Hi {spotify.me()["display_name"]}, ' \
-           f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
-           f'<a href="/playlists">my playlists2</a>' \
+    #return f'<h2>Hi {spotify.me()["display_name"]}, ' \
+    #       f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
+    #       f'<a href="/playlists">my playlists2</a>' \
          #  f'<small>currently playing: {results} </small>'
+    return render_template("index.html", song_info = song_info )
 
 @app.route('/playlists')
 def playlists():
@@ -62,6 +66,19 @@ def playlists():
     spotify = spotipy.Spotify(auth=token_info['access_token'])
     return spotify.current_user_playlists()
 '''
+def get_song_info(spotify):
+    song_info={}
+    result = spotify.current_user_playing_track()
+    print(result)
+    song_info.update({"song_name": result["item"]["name"] ,
+                    "artist": result["item"]["album"]["artists"][0]["name"],
+                     "album": result["item"]["album"]["name"],
+                     "cover_image": result["item"]["album"]["images"][0]["url"],
+                     "album_type" : result["item"]["album"]["album_type"],
+                     "release_date": result["item"]["album"]["release_date"]})
 
+    #print(result["item"]["name"])
+    print(result)
+    return song_info
 if __name__ == "__main__":
     app.run(debug=True)

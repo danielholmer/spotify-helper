@@ -6,6 +6,11 @@ Spotify helper
 
 {% block content %}
 
-<h1>Good stuff</h1>
-ok
+<h1>{{song_info.song_name}}</h1>
+<h2>{{song_info.artist}}</h2>
+<p>From the {{song_info.album_type}} <b>{{song_info.album}}</b></p>
+<p>Release date: {{song_info.release_date}} </p>
+
+
+<img src={{song_info.cover_image}} id ="cover_image" alt="">
 {% endblock %}
