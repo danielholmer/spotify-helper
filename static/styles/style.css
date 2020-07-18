@@ -37,3 +37,7 @@
 #bootstrap-overrides .navbar-brand{
   color: #1DB954;
 }
+
+#logon-button-container{
+  margin-top: 10vw;
+}

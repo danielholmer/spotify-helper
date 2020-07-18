@@ -40,10 +40,12 @@ def index():
     token_info = session.get('token_info')
     if not token_info:
         auth_url = auth_manager.get_authorize_url()
-        return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+        return render_template("logon.html", auth_url = auth_url)
 
     spotify = spotipy.Spotify(auth=token_info['access_token'])
     song_info = get_song_info(spotify)
+    if not song_info:
+        return render_template("no_song.html")
     song_info = get_lyrics(song_info)
 
 
@@ -73,7 +75,8 @@ def get_song_info(spotify):
     song_info={}
     result = spotify.current_user_playing_track()
     #print(result)
-    song_info.update({"song_name": result["item"]["name"] ,
+    if result:
+        song_info.update({"song_name": result["item"]["name"] ,
                     "artist": result["item"]["album"]["artists"][0]["name"],
                      "album": result["item"]["album"]["name"],
                      "cover_image": result["item"]["album"]["images"][0]["url"],
@@ -85,22 +88,22 @@ def get_song_info(spotify):
     return song_info
 
 def get_lyrics(song_info):
-    test=[]
+    song_lyrics=[]
     genius = lyricsgenius.Genius(GENIUS_CLIENT_ACCESS)
     try:
         #artist = genius.search_artist(song_info["artist"])
         song = genius.search_song(song_info["song_name"], song_info["artist"])
     #print(song.lyrics)
-        test = song.lyrics
-        test = test.split('\n')
-        print(test)
+        song_lyrics = song.lyrics
+        song_lyrics = song_lyrics.split('\n')
+        print(song_lyrics)
     #test = ''.join('<br>' + char if char.isupper() else char.strip() for char in test).strip()
     except:
         print("error finding lyrics")
-        test.append("No lyrics found")
+        song_lyrics.append("No lyrics found")
     #artist = genius.search_artist("Bloc Party", max_songs=3, sort="title")
     #print(artist.songs)
-    song_info.update({"lyrics": test})
+    song_info.update({"lyrics": song_lyrics})
     return song_info
 if __name__ == "__main__":
     app.run(debug=True)
