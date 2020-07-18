@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+Spotify helper
+{% endblock %}
+{% block nav_buttons %}
+<li class="nav-item">
+  <a class="nav-link" href="/">Currently playing </a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link" href="">Your most played songs <span class="sr-only">(current)</span></a>
+</li>
+{% endblock %}
+{% block user_info %}
+<li class="nav-item nav" id="display_name_container">
+
+  <div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{display_name}}
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" id="log_out_button" href="/logout/">Log out</a>
+
+    </div>
+  </div>
+</li>
+{% endblock %}
+{% block content %}
+<div id="top_song_container">
+  {% for song in top_songs%}
+  <div class="song-item">
+    <div class="top-song-graphics-container">
+        <div class="top-placment-container">
+            <h1>{{song.placement}}</h1>
+        </div>
+        <div class="top-cover-container">
+            <img src={{song.cover_image}} class="top-cover-image" alt="">
+        </div>
+    </div>
+    <div class="top-song-info-container"
+      <h2>{{song.artist}}</h2>
+      <h3>{{song.song_name}}</h3>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

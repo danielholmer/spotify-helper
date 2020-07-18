@@ -6,11 +6,18 @@ Spotify helper
 
 {% block content %}
 <div id="wrapper">
-  <div id="logon-button-container">
-
-    <a href= {{auth_url}} class="btn btn-success" role="button">Log in</a>
+  <div id="welcome-text-container">
+    <h1>Display the lyrics for your currently playing song on Spotify</h1>
 
   </div>
+  <div id="logon-button-container">
+
+    <a href={{auth_url}} id="login-button" role="button">Log in</a>
+
+  </div>
+
+
+
 </div>
 
 {% endblock %}

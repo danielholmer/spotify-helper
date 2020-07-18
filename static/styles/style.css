@@ -29,6 +29,7 @@
 }
 #song_container div{
   margin: 3%;
+
 }
 
 #sticky-footer {
@@ -38,6 +39,59 @@
   color: #1DB954;
 }
 
-#logon-button-container{
+#welcome-text-container{
   margin-top: 10vw;
+  max-width: 50%;
+  text-align: center;
+}
+#logon-button-container{
+  margin-top: 50px;
+}
+
+#login-button{
+  font-size: 25px;
+
+  background-color: #1DB954;
+  color: #FFFF;
+  border: none;
+  padding: 25px 120px 27px;
+  text-decoration: none;
+  border-radius: 500px;
+  transition-duration: .3s;
+
+
+}
+
+#login-button:hover {
+  background-color: #4bdf80;
+
+}
+
+.nav-item div{
+
+}
+#display_name_container_container{
+  margin-left:auto;
+}
+#top_song_container{
+  display: flex;
+  flex-direction: column;
+}
+.song-item{
+  margin-bottom: 20px;
+  display: flex;
+}
+.top-song-graphics-container{
+  display:flex;
+  justify-content: space-between;
+  width: 20%;
+}
+
+.top-song-info-container{
+  width: 80%;
+  max-width: 700px;
+}
+
+.song-item div{
+  margin: 0 10px;
 }
