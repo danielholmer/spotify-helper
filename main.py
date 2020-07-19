@@ -31,7 +31,7 @@ Session(app)
 def index():
 
     #cache_path = '.cache-'.join(str(uuid.uuid4()))
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=CACHE_PATH, scope='user-read-currently-playing user-read-private user-top-read')
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=CACHE_PATH, show_dialog= True, scope='user-read-currently-playing user-read-private user-top-read')
 
     if request.args.get("code"):
         print("request.args.get('code') = True")
@@ -44,6 +44,7 @@ def index():
     if not token_info:
         print("NOT TOKEN INFO")
         auth_url = auth_manager.get_authorize_url()
+    #    auth_url = auth_url +  "show_dialog=true"
         return render_template("logon.html", auth_url = auth_url)
 
     spotify = spotipy.Spotify(auth=token_info['access_token'])
@@ -79,7 +80,9 @@ def playlists():
     return spotify.current_user_playlists()
 '''
 
-@app.route('/top_songs')
+# https://stackoverflow.com/questions/38379507/flask-jinja2-update-div-content-without-refresh-page
+
+@app.route('/top_songs', methods=['POST','GET'])
 def top_songs():
     token_info = session.get('token_info')
     if not token_info:
@@ -88,7 +91,12 @@ def top_songs():
     spotify = spotipy.Spotify(auth=token_info['access_token'])
     display_name = get_user_info(spotify)
 
-    result = spotify.current_user_top_tracks(time_range='short_term')
+    time_span = "short_term"
+    if request.method == "POST":
+        time_span = request.form['time_span']
+        print(time_span)
+
+    result = spotify.current_user_top_tracks(time_range=time_span)
 
     top_songs = []
     for placement, res in enumerate(result["items"],1):
@@ -108,11 +116,15 @@ def top_songs():
 
 @app.route("/logout/")
 def logout():
+    print("logout")
     session.pop('token_info', None)
+    session.clear()
+    #session.set_cookie("token_info", expires=0)
 
     #app.config['SECRET_KEY'] = os.urandom(64)
     os.remove(CACHE_PATH)
-    return redirect(url_for('index'))
+    #return redirect(url_for('index'))
+    return redirect("/")
 
 def get_user_info(spotify):
 
@@ -126,11 +138,17 @@ def get_song_info(spotify):
     result = spotify.current_user_playing_track()
     #print(result)
     if result:
+        if "-" in result["item"]["name"]:
+            song_name = result["item"]["name"].split("-")[0]
+        else:
+            song_name = result["item"]["name"]
+
         artist_list= []
         for artist in result["item"]["album"]["artists"]:
             print(artist["name"])
             artist_list.append(artist["name"])
-        song_info.update({"song_name": result["item"]["name"] ,
+
+        song_info.update({"song_name": song_name ,
                     "artist": artist_list,
                      "album": result["item"]["album"]["name"],
                      "cover_image": result["item"]["album"]["images"][0]["url"],

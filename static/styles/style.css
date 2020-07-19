@@ -76,6 +76,7 @@
 #top_song_container{
   display: flex;
   flex-direction: column;
+  margin-top: 25px;
 }
 .song-item{
   margin-bottom: 20px;
@@ -94,4 +95,21 @@
 
 .song-item div{
   margin: 0 10px;
+}
+
+#myTab{
+  width:100%;
+}
+
+#form-container{
+  width:80%;
+}
+
+#bootstrap-overrides .nav-tabs .nav-link.active{
+  color: #1DB954;
+  
+}
+#bootstrap-overrides .nav-tabs a{
+  color: #6c757d;
+
 }
