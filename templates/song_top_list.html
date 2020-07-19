@@ -1,0 +1,17 @@
+
+  {% for song in top_songs%}
+  <div class="song-item">
+    <div class="top-song-graphics-container">
+        <div class="top-placment-container">
+            <h1>{{song.placement}}</h1>
+        </div>
+        <div class="top-cover-container">
+            <img src={{song.cover_image}} class="top-cover-image" alt="">
+        </div>
+    </div>
+    <div class="top-song-info-container"
+      <h2>{{song.artist}}</h2>
+      <h3>{{song.song_name}}</h3>
+    </div>
+  </div>
+  {% endfor %}

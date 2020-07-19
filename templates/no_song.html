@@ -3,6 +3,29 @@
 {% block title %}
 Spotify helper
 {% endblock %}
+{% block nav_buttons %}
+<li class="nav-item active">
+  <a class="nav-link" onclick="window.location.href=this">Currently playing <span class="sr-only">(current)</span></a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/top_songs">Your most played songs</a>
+</li>
+{% endblock %}
+{% block user_info %}
+<li class="nav-item nav" id="display_name_container">
+
+  <div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{display_name}}
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" id="log_out_button" href="/logout/">Log out</a>
+
+    </div>
+  </div>
+</li>
+{% endblock %}
 
 {% block content %}
 <div id="wrapper">

@@ -49,12 +49,12 @@ def index():
 
     spotify = spotipy.Spotify(auth=token_info['access_token'])
     song_info = get_song_info(spotify)
-
+    display_name = get_user_info(spotify)
     if not song_info:
-        return render_template("no_song.html")
+        return render_template("no_song.html", display_name = display_name)
 
     song_info = get_lyrics(song_info)
-    display_name = get_user_info(spotify)
+
 
 
 
@@ -112,7 +112,10 @@ def top_songs():
     #print(result["items"][0]["album"]["artists"]["name"])
     print(top_songs)
     #return spotify.current_user_playlists()
-    return render_template("top_songs.html", display_name=display_name, top_songs = top_songs)
+    if request.method == "POST":
+        return render_template("song_top_list.html", display_name=display_name, top_songs = top_songs)
+    else:
+        return render_template("top_songs.html", display_name=display_name, top_songs = top_songs)
 
 @app.route("/logout/")
 def logout():
