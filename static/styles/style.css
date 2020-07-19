@@ -77,24 +77,36 @@
   display: flex;
   flex-direction: column;
   margin-top: 25px;
+  justify-content: center;
+  width: 100%;
 }
 .song-item{
   margin-bottom: 20px;
   display: flex;
+  justify-content: center;
 }
 .top-song-graphics-container{
   display:flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 20%;
+  margin-right: 10px;
 }
 
 .top-song-info-container{
-  width: 80%;
-  max-width: 700px;
+  width: 50%;
+  max-width: 800px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.top-placement-container{
+  margin-left: auto;
+  margin-right: 10px;
+
 }
 
 .song-item div{
-  margin: 0 10px;
+
 }
 
 #myTab{
@@ -107,7 +119,7 @@
 
 #bootstrap-overrides .nav-tabs .nav-link.active{
   color: #1DB954;
-  
+
 }
 #bootstrap-overrides .nav-tabs a{
   color: #6c757d;
