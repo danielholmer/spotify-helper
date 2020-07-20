@@ -16,5 +16,5 @@ $('#form-container a').click(function(e) {
 function replace_content(response){
    $('#top_song_container').empty();
 
-    $("#top_song_container").html(response);
+    $("#top_song_container").html(response).hide().fadeIn("slow");
 }

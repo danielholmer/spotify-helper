@@ -5,7 +5,7 @@ Spotify helper
 {% endblock %}
 {% block nav_buttons %}
 <li class="nav-item">
-  <a class="nav-link" href="/">Currently playing </a>
+  <a class="nav-link" href="/">Now playing </a>
 </li>
 <li class="nav-item active">
   <a class="nav-link" href="">Your most played songs <span class="sr-only">(current)</span></a>
@@ -31,13 +31,13 @@ Spotify helper
 
     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" sectionId="short_term">Week</a>
+        <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" sectionId="short_term">Week</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" sectionId="medium_term">Month</a>
+        <a class="nav-link" id="profile-tab" data-toggle="tab"  role="tab" aria-controls="profile" aria-selected="false" sectionId="medium_term">Month</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false" sectionId="long_term">Year</a>
+        <a class="nav-link" id="contact-tab" data-toggle="tab"  role="tab" aria-controls="contact" aria-selected="false" sectionId="long_term">Year</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -59,7 +59,7 @@ Spotify helper
         </div>
     </div>
     <div class="top-song-info-container"
-      <h2>{{song.artist}}</h2>
+      <h3>{{song.artist}}</h3>
       <h3>{{song.song_name}}</h3>
     </div>
   </div>

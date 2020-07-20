@@ -16,8 +16,9 @@ from flask_session import Session
 import spotipy
 import uuid
 import lyricsgenius
+from credentials import *
 
-GENIUS_CLIENT_ACCESS = "gwPJBes0Ai9I7S6_3MWXhfV09Bba30t_TpYmGoPi79GlFhHZ_W7HGogczi6WLO0F"
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -31,7 +32,10 @@ Session(app)
 def index():
 
     #cache_path = '.cache-'.join(str(uuid.uuid4()))
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_path=CACHE_PATH, show_dialog= True, scope='user-read-currently-playing user-read-private user-top-read')
+    auth_manager = spotipy.oauth2.SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
+     client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=SPOTIPY_REDIRECT_URI, cache_path=CACHE_PATH,
+     show_dialog= True,
+     scope='user-read-currently-playing user-read-private user-top-read')
 
     if request.args.get("code"):
         print("request.args.get('code') = True")
@@ -48,7 +52,19 @@ def index():
         return render_template("logon.html", auth_url = auth_url)
 
     spotify = spotipy.Spotify(auth=token_info['access_token'])
-    song_info = get_song_info(spotify)
+
+    try:
+        song_info = get_song_info(spotify)
+    except spotipy.client.SpotifyException:
+        # re-authenticate when token expires
+        cached_token = auth_manager.get_cached_token()
+        refreshed_token = cached_token['refresh_token']
+        session['token_info'] = auth_manager.refresh_access_token(refreshed_token)
+        # also we need to specifically pass `auth=new_token['access_token']`
+        token_info = session.get('token_info')
+        spotify = spotipy.Spotify(auth=token_info['access_token'])
+
+        song_info = get_song_info(spotify)
     display_name = get_user_info(spotify)
     if not song_info:
         return render_template("no_song.html", display_name = display_name)

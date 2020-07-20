@@ -5,7 +5,7 @@ Spotify helper
 {% endblock %}
 {% block nav_buttons %}
 <li class="nav-item active">
-  <a class="nav-link" onclick="window.location.href=this">Currently playing <span class="sr-only">(current)</span></a>
+  <a class="nav-link" onclick="window.location.href=this">Now playing <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="/top_songs">Your most played songs</a>
@@ -29,8 +29,14 @@ Spotify helper
 
 {% block content %}
 <div id="wrapper">
+  <div class="not-playing-info-container">
+    <h1> Start listening to a song to show its lyrics!</h1>
+  </div>
+  <div class="not-playing-image-container">
+    <img src="../static/images/not_playing.svg" alt="">
+  </div>
 
-  <h1>No song currently playing</h1>
+
 </div>
 
 {% endblock %}
