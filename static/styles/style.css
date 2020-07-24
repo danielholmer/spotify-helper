@@ -21,6 +21,8 @@
   margin: 4vw 0vw;
   display: flex;
   flex-direction: column;
+  width: 80%;
+  text-align: center;
 
 
 }
